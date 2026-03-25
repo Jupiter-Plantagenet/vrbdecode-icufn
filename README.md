@@ -4,7 +4,7 @@
 
 **Affiliation:** IT Convergence Engineering and NSLab Co. Ltd., Kumoh National Institute of Technology, Gumi, South Korea; ICT Convergence Research Center, Kumoh National Institute of Technology
 
-**Venue:** ICUFN 2025
+**Venue:** ICUFN 2026
 
 ## Description
 
