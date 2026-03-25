@@ -1,18 +1,23 @@
 #!/usr/bin/env python3
-"""Generate figures for the ICUFN paper from real experimental data."""
+"""Generate figures for the ICUFN paper from experimental result files.
 
+Reads data from eval/*.json -- never uses hardcoded values.
+"""
+
+import json
 import os
 import sys
+
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
-import numpy as np
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(os.path.dirname(SCRIPT_DIR))
+EVAL_DIR = os.path.join(ROOT, "eval")
 FIG_DIR = os.path.join(SCRIPT_DIR, "figures")
 os.makedirs(FIG_DIR, exist_ok=True)
 
-# IEEE column width ~3.5in, double ~7in
 SINGLE_COL = 3.5
 plt.rcParams.update({
     "font.family": "serif",
@@ -28,59 +33,70 @@ plt.rcParams.update({
 
 
 def fig2_latency_scaling():
-    """Fig 2: Verification latency vs transcript length N."""
-    # Real data from run_latency_scaling.py (full run, 100 measured)
-    N_vals = [16, 32, 64, 128, 256]
+    """Fig 2: Verification latency vs transcript length N.
 
-    # K=16 data
-    k16_mean = [0.30, 0.59, 1.17, 2.34, 4.70]
-    k16_p95  = [0.35, 0.63, 1.22, 2.48, 5.02]
+    Reads from eval/latency_scaling_results.json.
+    """
+    json_path = os.path.join(EVAL_DIR, "latency_scaling_results.json")
+    with open(json_path) as f:
+        data = json.load(f)
 
-    # K=32 data
-    k32_mean = [0.50, 0.99, 2.02, 4.02, 8.10]
-    k32_p95  = [0.55, 1.02, 2.21, 4.25, 8.55]
+    results = data["results"]
 
-    # K=64 data (extrapolated from per-step cost ~0.057ms/step)
-    k64_mean = [0.91, 1.82, 3.65, 7.30, 14.60]
-    k64_p95  = [1.00, 1.95, 3.90, 7.75, 15.40]
+    # Group by K
+    by_K = {}
+    for r in results:
+        by_K.setdefault(r["K"], []).append(r)
 
     fig, ax = plt.subplots(figsize=(SINGLE_COL, 2.4))
 
-    ax.plot(N_vals, k16_mean, "o-", label="$K=16$", color="#1f77b4")
-    ax.plot(N_vals, k32_mean, "s-", label="$K=32$", color="#ff7f0e")
-    ax.plot(N_vals, k64_mean, "^-", label="$K=64$", color="#2ca02c")
+    colors = {16: "#1f77b4", 32: "#ff7f0e", 64: "#2ca02c"}
+    markers = {16: "o", 32: "s", 64: "^"}
 
-    # P95 as lighter shaded region
-    ax.fill_between(N_vals, k16_mean, k16_p95, alpha=0.15, color="#1f77b4")
-    ax.fill_between(N_vals, k32_mean, k32_p95, alpha=0.15, color="#ff7f0e")
-    ax.fill_between(N_vals, k64_mean, k64_p95, alpha=0.15, color="#2ca02c")
+    for K in sorted(by_K.keys()):
+        rows = sorted(by_K[K], key=lambda r: r["N"])
+        Ns = [r["N"] for r in rows]
+        means = [r["mean_ms"] for r in rows]
+        p95s = [r["p95_ms"] for r in rows]
+        ax.plot(Ns, means, f"{markers[K]}-", label=f"$K = {K}$",
+                color=colors[K])
+        ax.fill_between(Ns, means, p95s, alpha=0.15, color=colors[K])
 
     ax.set_xlabel("Transcript length $N$ (steps)")
     ax.set_ylabel("Verification latency (ms)")
-    ax.set_xticks(N_vals)
+    ax.set_xscale("log", base=2)
+    ax.set_xticks([16, 32, 64, 128, 256])
+    ax.set_xticklabels(["16", "32", "64", "128", "256"])
     ax.legend(loc="upper left")
     ax.grid(True, alpha=0.3)
-    ax.set_xlim(N_vals[0] - 5, N_vals[-1] + 10)
 
     fig.tight_layout()
-    path = os.path.join(FIG_DIR, "latency_vs_n.pdf")
-    fig.savefig(path)
-    print(f"Saved {path}")
-    # Also save PNG for preview
-    fig.savefig(os.path.join(FIG_DIR, "latency_vs_n.png"))
+    for ext in ("pdf", "png"):
+        path = os.path.join(FIG_DIR, f"latency_vs_n.{ext}")
+        fig.savefig(path, bbox_inches="tight")
+        print(f"Saved {path}")
     plt.close(fig)
 
 
 def fig3_bias_detection():
-    """Fig 3: Bias heuristic detection power vs bias probability."""
-    # Real data from run_bias_heuristic.py (full run, 1000 FP, 200 per level)
-    p_vals = [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+    """Fig 3: Bias heuristic detection power vs bias probability.
 
-    # Overall detection (any check) — always 100% because PRF check fires
-    det_any = [0, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100]
+    Reads from eval/bias_heuristic_results.json.
+    """
+    json_path = os.path.join(EVAL_DIR, "bias_heuristic_results.json")
+    with open(json_path) as f:
+        data = json.load(f)
 
-    # Bias heuristic only — step function at p=0.5
-    det_bias = [0, 0, 0, 0, 0, 100, 100, 100, 100, 100, 100]
+    levels = data["detection_power"]
+
+    p_vals = []
+    det_any = []
+    det_bias = []
+
+    for level in levels:
+        p_vals.append(level["bias_level"])
+        det_any.append(level["detection_rate_any"] * 100)
+        det_bias.append(level["detection_rate_bias_heuristic"] * 100)
 
     fig, ax = plt.subplots(figsize=(SINGLE_COL, 2.4))
 
@@ -88,8 +104,6 @@ def fig3_bias_detection():
             color="#1f77b4", zorder=3)
     ax.plot(p_vals, det_bias, "s--", label="Bias heuristic only",
             color="#d62728", zorder=3)
-
-    # Mark the FP region
     ax.axvspan(-0.02, 0.02, alpha=0.1, color="green", label="Honest ($p=0$)")
 
     ax.set_xlabel("Bias probability $p$")
@@ -100,14 +114,14 @@ def fig3_bias_detection():
     ax.grid(True, alpha=0.3)
 
     fig.tight_layout()
-    path = os.path.join(FIG_DIR, "bias_detection.pdf")
-    fig.savefig(path)
-    print(f"Saved {path}")
-    fig.savefig(os.path.join(FIG_DIR, "bias_detection.png"))
+    for ext in ("pdf", "png"):
+        path = os.path.join(FIG_DIR, f"bias_detection.{ext}")
+        fig.savefig(path, bbox_inches="tight")
+        print(f"Saved {path}")
     plt.close(fig)
 
 
 if __name__ == "__main__":
     fig2_latency_scaling()
     fig3_bias_detection()
-    print("All figures generated.")
+    print("All figures generated from experimental data.")

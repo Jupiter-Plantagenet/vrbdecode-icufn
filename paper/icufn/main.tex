@@ -188,7 +188,7 @@ Hash-chain and Merkle-tree constructions~\cite{Crosby2009TamperEvident} underpin
 \section{Experimental Evaluation}\label{sec:eval}
 
 \subsection{Experimental setup}
-We implement the receipt generator and verifier in Python~3.12 with SHA-256 (Table~\ref{tab:params}). Scaling experiments use Zipf-like logit distributions; we additionally validate on GPT-2 (117M) logits across 100 prompts (4 categories, 3{,}200 steps) at $K\!=\!32$, $N\!=\!32$. All latency measurements are single-threaded. Production deployment would replace SHA-256 with Poseidon for SNARK compatibility~\cite{Nova2022}.
+We implement the receipt generator and verifier in Python with SHA-256 (Table~\ref{tab:params}). For scaling experiments, candidate logits are assigned by rank: the highest-ranked candidate receives logit $+2.0$ (in Q16.16 fixed-point) and the lowest receives $-3.0$, producing a peaked distribution that approximates the heavy-tailed output distributions observed in real language models. We additionally validate on logits extracted from GPT-2 (117M) across 100 prompts in four categories (e.g., ``\textit{The central bank raised interest rates by 25 basis points on}''), with $K\!=\!32$ and $N\!=\!32$ per prompt (3{,}200 total steps). All latency measurements are single-threaded. Production deployment would replace SHA-256 with Poseidon for SNARK compatibility~\cite{Nova2022}. The implementation and all experimental scripts are publicly available.\footnote{\url{https://github.com/Jupiter-Plantagenet/vrbdecode-icufn}}
 
 \begin{table}[t]
 \caption{Experimental parameters.}\label{tab:params}
@@ -197,15 +197,15 @@ We implement the receipt generator and verifier in Python~3.12 with SHA-256 (Tab
 \toprule
 Parameter & Value \\
 \midrule
-Language              & Python 3.12 \\
+Language              & Python \\
 Hash function         & SHA-256 (domain-separated) \\
 Candidate-set sizes $K$  & 16, 32, 64 \\
 Transcript lengths $N$   & 16, 32, 64, 128, 256 \\
-Logit distribution    & Zipf-like ($+2.0$ to $-3.0$ Q16.16) \\
+Logit distribution    & Rank-weighted (see text) \\
 Top-$k$               & $\lfloor K/4 \rfloor$ \\
 Top-$p$ (Q16.16)      & 0.9 \\
 Temperature (Q16.16)  & 1.0 \\
-Latency runs per config & 100 (5 warmup discarded) \\
+Latency runs per config & 100 (5 warmup runs discarded) \\
 FP honest transcripts & 10{,}000 (incl.\ edge cases) \\
 Bias heuristic FP trials & 1{,}000 \\
 GPT-2 validation prompts & 100 (4 categories $\times$ 25) \\
@@ -244,14 +244,14 @@ The key insight is that re-execution is necessary for detecting semantic attacks
 
 \subsection{Adaptive adversary analysis}
 
-We implement a truly adaptive adversary with full access to the verification algorithm, testing 200 trials across four entropy levels (degenerate, low, medium, high) at $K\!=\!16$, $N\!=\!32$. We distinguish \emph{policy evasion} (using $P'\!\neq\!P$ without detection) from \emph{output evasion} (changing the emitted token). Three strategies are evaluated. (a)~\emph{Degenerate-case search:} policy evasion exists (at degenerate entropy 100\% of perturbations produce identical outputs, declining to 40.9\% at medium entropy), but output evasion is 0\% at every entropy level, confirming that the re-execution guarantee is a hard wall with zero adversarial utility. (b)~\emph{Optimal evasion budget:} the adversary pre-screens steps and tampers only where outputs are unchanged; 100\% of steps admit such a perturbation, yet no output-changing perturbation evades detection. (c)~\emph{Collision-proximate attack:} candidate-hash Hamming distance under single-token substitution averages 128.0~bits (minimum 91~bits), providing no exploitable structure for hash collision.
+We implement an adaptive adversary with full access to the verification algorithm, testing 200 trials across four entropy levels (degenerate, low, medium, high) at $K\!=\!16$, $N\!=\!32$. We distinguish \emph{policy evasion} (using $P'\!\neq\!P$ without detection) from \emph{output evasion} (changing the emitted token). Three strategies are evaluated. (a)~\emph{Degenerate-case search:} policy evasion exists (at degenerate entropy 100\% of perturbations produce identical outputs, declining to 40.9\% at medium entropy), but output evasion is 0\% at every entropy level, confirming that the re-execution guarantee is a hard wall with zero adversarial utility. (b)~\emph{Optimal evasion budget:} the adversary pre-screens steps and tampers only where outputs are unchanged; 100\% of steps admit such a perturbation, yet no output-changing perturbation evades detection. (c)~\emph{Collision-proximate attack:} candidate-hash Hamming distance under single-token substitution averages 128.0~bits (minimum 91~bits), providing no exploitable structure for hash collision.
 
 \subsection{Operational metrics}
 
 Table~\ref{tab:latency} reports verification latency, evidence size, throughput, and per-step cost across configurations. Fig.~\ref{fig:latency} visualizes the scaling behavior.
 
 \begin{table}[t]
-\caption{Verification latency and evidence size ($K$: candidate-set size, $N$: transcript length). Measured on an Intel Core i7 laptop, Python~3.12, Ubuntu~24.04 (WSL~2), 95 measured runs per configuration after 5 warmup.}\label{tab:latency}
+\caption{Verification latency and evidence size ($K$: candidate-set size, $N$: transcript length). Measured on an Intel Core i7 Desktop, Python~3.12, Ubuntu~24.04 (WSL~2), 95 measured runs per configuration after 5 warmup.}\label{tab:latency}
 \centering
 \setlength{\tabcolsep}{3.0pt}
 \begin{tabular}{@{}rrrrrrr@{}}

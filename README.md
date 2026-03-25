@@ -8,7 +8,7 @@
 
 ## Description
 
-This repository provides the complete source code and evaluation scripts to reproduce the results in the ICUFN 2025 paper "Attack-Aware Forensic Receipts for Accountable LLM Decoding Services." The paper presents a forensic audit architecture for LLM decoding services that binds policy commitments, per-step receipts, tamper-evident chaining, and deterministic re-execution into chain-of-custody evidence artifacts. The prototype achieves sub-millisecond per-step latency (0.021--0.067 ms/step), compact evidence artifacts (8--307 KB), 0.0% false positives across 10,000 honest transcripts, and 100% detection across five attack classes. A three-baseline comparison (Merkle log signing, policy-commitment verification, watermark detection) demonstrates that re-execution is necessary for reliable semantic attack detection (5/5 vs. 2/5 for the strongest alternative).
+This repository provides the complete source code and evaluation scripts to reproduce the results in the ICUFN 2026 paper "Attack-Aware Forensic Receipts for Accountable LLM Decoding Services." The paper presents a forensic audit architecture for LLM decoding services that binds policy commitments, per-step receipts, tamper-evident chaining, and deterministic re-execution into chain-of-custody evidence artifacts. The prototype achieves sub-millisecond per-step latency (0.021--0.067 ms/step), compact evidence artifacts (8--307 KB), 0.0% false positives across 10,000 honest transcripts, and 100% detection across five attack classes. A three-baseline comparison (Merkle log signing, policy-commitment verification, watermark detection) demonstrates that re-execution is necessary for reliable semantic attack detection (5/5 vs. 2/5 for the strongest alternative).
 
 ## Repository Structure
 
@@ -164,7 +164,7 @@ All result files are included in `eval/` so that readers can inspect the data wi
 
 MIT License
 
-Copyright (c) 2025 George Chidera Akor, Love Allen Chijioke Ahakonye, Jae Min Lee, Dong-Seong Kim
+Copyright (c) 2026 George Chidera Akor, Love Allen Chijioke Ahakonye, Jae Min Lee, Dong-Seong Kim
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
