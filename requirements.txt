@@ -1,0 +1,13 @@
+# Core dependencies (all experiments except GPT-2)
+# No external packages required -- the core pipeline uses only the Python 3.12 stdlib.
+
+# For the GPT-2 validation experiment (eval/extract_gpt2_logits.py):
+torch>=2.0
+transformers>=4.30
+
+# For figure regeneration (paper/icufn/generate_figures.py):
+matplotlib>=3.7
+numpy>=1.24
+
+# For running tests:
+pytest>=7.0

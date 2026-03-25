@@ -1,0 +1,419 @@
+{
+  "degenerate_case_search": {
+    "experiment": "degenerate_case_search",
+    "config": {
+      "n_trials": 200,
+      "K": 16,
+      "N": 32
+    },
+    "results_by_entropy": {
+      "degenerate": {
+        "n_steps_total": 6400,
+        "n_perturbations_tested": 281600,
+        "n_evasion_full_match": 281600,
+        "n_evasion_token_only_detected": 0,
+        "n_output_change_detected": 0,
+        "evasion_rate": 1.0,
+        "token_only_detected_rate": 0.0,
+        "output_change_detected_rate": 0.0,
+        "evasion_rate_by_perturbation_type": {
+          "temperature": 1.0,
+          "top_k": 1.0,
+          "top_p": 1.0
+        },
+        "evasion_examples": [
+          {
+            "type": "temperature",
+            "delta": 1,
+            "delta_frac": 1.526e-05,
+            "entropy_level": "degenerate"
+          },
+          {
+            "type": "temperature",
+            "delta": -1,
+            "delta_frac": 1.526e-05,
+            "entropy_level": "degenerate"
+          },
+          {
+            "type": "temperature",
+            "delta": 2,
+            "delta_frac": 3.052e-05,
+            "entropy_level": "degenerate"
+          },
+          {
+            "type": "temperature",
+            "delta": -2,
+            "delta_frac": 3.052e-05,
+            "entropy_level": "degenerate"
+          },
+          {
+            "type": "temperature",
+            "delta": 5,
+            "delta_frac": 7.629e-05,
+            "entropy_level": "degenerate"
+          },
+          {
+            "type": "temperature",
+            "delta": -5,
+            "delta_frac": 7.629e-05,
+            "entropy_level": "degenerate"
+          },
+          {
+            "type": "temperature",
+            "delta": 10,
+            "delta_frac": 0.00015259,
+            "entropy_level": "degenerate"
+          },
+          {
+            "type": "temperature",
+            "delta": -10,
+            "delta_frac": 0.00015259,
+            "entropy_level": "degenerate"
+          },
+          {
+            "type": "temperature",
+            "delta": 50,
+            "delta_frac": 0.00076294,
+            "entropy_level": "degenerate"
+          },
+          {
+            "type": "temperature",
+            "delta": -50,
+            "delta_frac": 0.00076294,
+            "entropy_level": "degenerate"
+          }
+        ],
+        "interpretation": "Evasion rate 100.0000%: the adversary can change policy parameters at 100.0000% of tested perturbations without detection. However, in ALL evasion cases the output (y, Ws, R) is identical to honest execution -- the adversary gains no utility. Any perturbation that changes the output is detected."
+      },
+      "low": {
+        "n_steps_total": 6400,
+        "n_perturbations_tested": 281600,
+        "n_evasion_full_match": 275200,
+        "n_evasion_token_only_detected": 5693,
+        "n_output_change_detected": 707,
+        "evasion_rate": 0.977273,
+        "token_only_detected_rate": 0.020217,
+        "output_change_detected_rate": 0.002511,
+        "evasion_rate_by_perturbation_type": {
+          "temperature": 0.952381,
+          "top_k": 1.0,
+          "top_p": 1.0
+        },
+        "evasion_examples": [
+          {
+            "type": "temperature",
+            "delta": 1,
+            "delta_frac": 1.526e-05,
+            "entropy_level": "low"
+          },
+          {
+            "type": "temperature",
+            "delta": -1,
+            "delta_frac": 1.526e-05,
+            "entropy_level": "low"
+          },
+          {
+            "type": "temperature",
+            "delta": 2,
+            "delta_frac": 3.052e-05,
+            "entropy_level": "low"
+          },
+          {
+            "type": "temperature",
+            "delta": -2,
+            "delta_frac": 3.052e-05,
+            "entropy_level": "low"
+          },
+          {
+            "type": "temperature",
+            "delta": 5,
+            "delta_frac": 7.629e-05,
+            "entropy_level": "low"
+          },
+          {
+            "type": "temperature",
+            "delta": -5,
+            "delta_frac": 7.629e-05,
+            "entropy_level": "low"
+          },
+          {
+            "type": "temperature",
+            "delta": 10,
+            "delta_frac": 0.00015259,
+            "entropy_level": "low"
+          },
+          {
+            "type": "temperature",
+            "delta": -10,
+            "delta_frac": 0.00015259,
+            "entropy_level": "low"
+          },
+          {
+            "type": "temperature",
+            "delta": 50,
+            "delta_frac": 0.00076294,
+            "entropy_level": "low"
+          },
+          {
+            "type": "temperature",
+            "delta": -50,
+            "delta_frac": 0.00076294,
+            "entropy_level": "low"
+          }
+        ],
+        "interpretation": "Evasion rate 97.7273%: the adversary can change policy parameters at 97.7273% of tested perturbations without detection. However, in ALL evasion cases the output (y, Ws, R) is identical to honest execution -- the adversary gains no utility. Any perturbation that changes the output is detected."
+      },
+      "medium": {
+        "n_steps_total": 6400,
+        "n_perturbations_tested": 281600,
+        "n_evasion_full_match": 115200,
+        "n_evasion_token_only_detected": 151929,
+        "n_output_change_detected": 14471,
+        "evasion_rate": 0.409091,
+        "token_only_detected_rate": 0.539521,
+        "output_change_detected_rate": 0.051388,
+        "evasion_rate_by_perturbation_type": {
+          "temperature": 0.0,
+          "top_k": 0.2,
+          "top_p": 0.944444
+        },
+        "evasion_examples": [
+          {
+            "type": "top_k",
+            "delta": 1,
+            "entropy_level": "medium"
+          },
+          {
+            "type": "top_p",
+            "delta": 1,
+            "delta_frac": 1.695e-05,
+            "entropy_level": "medium"
+          },
+          {
+            "type": "top_p",
+            "delta": -1,
+            "delta_frac": 1.695e-05,
+            "entropy_level": "medium"
+          },
+          {
+            "type": "top_p",
+            "delta": 2,
+            "delta_frac": 3.391e-05,
+            "entropy_level": "medium"
+          },
+          {
+            "type": "top_p",
+            "delta": -2,
+            "delta_frac": 3.391e-05,
+            "entropy_level": "medium"
+          },
+          {
+            "type": "top_p",
+            "delta": 5,
+            "delta_frac": 8.477e-05,
+            "entropy_level": "medium"
+          },
+          {
+            "type": "top_p",
+            "delta": -5,
+            "delta_frac": 8.477e-05,
+            "entropy_level": "medium"
+          },
+          {
+            "type": "top_p",
+            "delta": 10,
+            "delta_frac": 0.00016954,
+            "entropy_level": "medium"
+          },
+          {
+            "type": "top_p",
+            "delta": -10,
+            "delta_frac": 0.00016954,
+            "entropy_level": "medium"
+          },
+          {
+            "type": "top_p",
+            "delta": 50,
+            "delta_frac": 0.00084772,
+            "entropy_level": "medium"
+          }
+        ],
+        "interpretation": "Evasion rate 40.9091%: the adversary can change policy parameters at 40.9091% of tested perturbations without detection. However, in ALL evasion cases the output (y, Ws, R) is identical to honest execution -- the adversary gains no utility. Any perturbation that changes the output is detected."
+      },
+      "high": {
+        "n_steps_total": 6400,
+        "n_perturbations_tested": 281600,
+        "n_evasion_full_match": 172755,
+        "n_evasion_token_only_detected": 87230,
+        "n_output_change_detected": 21615,
+        "evasion_rate": 0.613477,
+        "token_only_detected_rate": 0.309766,
+        "output_change_detected_rate": 0.076758,
+        "evasion_rate_by_perturbation_type": {
+          "temperature": 0.428237,
+          "top_k": 0.0,
+          "top_p": 1.0
+        },
+        "evasion_examples": [
+          {
+            "type": "temperature",
+            "delta": 1,
+            "delta_frac": 1.526e-05,
+            "entropy_level": "high"
+          },
+          {
+            "type": "temperature",
+            "delta": -1,
+            "delta_frac": 1.526e-05,
+            "entropy_level": "high"
+          },
+          {
+            "type": "temperature",
+            "delta": 2,
+            "delta_frac": 3.052e-05,
+            "entropy_level": "high"
+          },
+          {
+            "type": "temperature",
+            "delta": -2,
+            "delta_frac": 3.052e-05,
+            "entropy_level": "high"
+          },
+          {
+            "type": "temperature",
+            "delta": 5,
+            "delta_frac": 7.629e-05,
+            "entropy_level": "high"
+          },
+          {
+            "type": "temperature",
+            "delta": -5,
+            "delta_frac": 7.629e-05,
+            "entropy_level": "high"
+          },
+          {
+            "type": "temperature",
+            "delta": 10,
+            "delta_frac": 0.00015259,
+            "entropy_level": "high"
+          },
+          {
+            "type": "temperature",
+            "delta": -10,
+            "delta_frac": 0.00015259,
+            "entropy_level": "high"
+          },
+          {
+            "type": "top_p",
+            "delta": 1,
+            "delta_frac": 1.695e-05,
+            "entropy_level": "high"
+          },
+          {
+            "type": "top_p",
+            "delta": -1,
+            "delta_frac": 1.695e-05,
+            "entropy_level": "high"
+          }
+        ],
+        "interpretation": "Evasion rate 61.3477%: the adversary can change policy parameters at 61.3477% of tested perturbations without detection. However, in ALL evasion cases the output (y, Ws, R) is identical to honest execution -- the adversary gains no utility. Any perturbation that changes the output is detected."
+      }
+    },
+    "total_evasion_cases_sampled": 40,
+    "key_finding": "Policy evasion is possible: the adversary can use P' != P without detection when the candidate distribution is degenerate (one dominant token). However, output evasion is impossible: every case where the adversary evades detection is a case where the output is identical to honest execution. The adversary cannot change the output token while evading detection.",
+    "elapsed_s": 14.678
+  },
+  "optimal_evasion_budget": {
+    "experiment": "optimal_evasion_budget",
+    "config": {
+      "n_trials": 100,
+      "K": 16,
+      "N": 64
+    },
+    "results_by_entropy": {
+      "degenerate": {
+        "n_trials": 100,
+        "policy_evasion_fraction_mean": 1.0,
+        "policy_evasion_fraction_max": 1.0,
+        "policy_evasion_fraction_min": 1.0,
+        "output_evasion_fraction_mean": 0.0,
+        "mean_entropy_all_steps": 0.0,
+        "mean_entropy_policy_evasion_steps": 0.0,
+        "mean_entropy_non_evasion_steps": 0,
+        "end_to_end_passes": true,
+        "interpretation": "Policy evasion at 100.00% of steps (adversary uses P'!=P, output unchanged). Output evasion at 0.00% of steps (adversary changes output y while evading -- should be 0%)."
+      },
+      "low": {
+        "n_trials": 100,
+        "policy_evasion_fraction_mean": 1.0,
+        "policy_evasion_fraction_max": 1.0,
+        "policy_evasion_fraction_min": 1.0,
+        "output_evasion_fraction_mean": 0.0,
+        "mean_entropy_all_steps": 0.0,
+        "mean_entropy_policy_evasion_steps": 0.0,
+        "mean_entropy_non_evasion_steps": 0,
+        "end_to_end_passes": true,
+        "interpretation": "Policy evasion at 100.00% of steps (adversary uses P'!=P, output unchanged). Output evasion at 0.00% of steps (adversary changes output y while evading -- should be 0%)."
+      },
+      "medium": {
+        "n_trials": 100,
+        "policy_evasion_fraction_mean": 1.0,
+        "policy_evasion_fraction_max": 1.0,
+        "policy_evasion_fraction_min": 1.0,
+        "output_evasion_fraction_mean": 0.0,
+        "mean_entropy_all_steps": 1.9043,
+        "mean_entropy_policy_evasion_steps": 1.9043,
+        "mean_entropy_non_evasion_steps": 0,
+        "end_to_end_passes": true,
+        "interpretation": "Policy evasion at 100.00% of steps (adversary uses P'!=P, output unchanged). Output evasion at 0.00% of steps (adversary changes output y while evading -- should be 0%)."
+      },
+      "high": {
+        "n_trials": 100,
+        "policy_evasion_fraction_mean": 1.0,
+        "policy_evasion_fraction_max": 1.0,
+        "policy_evasion_fraction_min": 1.0,
+        "output_evasion_fraction_mean": 0.0,
+        "mean_entropy_all_steps": 2.0,
+        "mean_entropy_policy_evasion_steps": 2.0,
+        "mean_entropy_non_evasion_steps": 0,
+        "end_to_end_passes": true,
+        "interpretation": "Policy evasion at 100.00% of steps (adversary uses P'!=P, output unchanged). Output evasion at 0.00% of steps (adversary changes output y while evading -- should be 0%)."
+      }
+    },
+    "key_finding": "The adversary can find policy perturbations that produce identical outputs (policy evasion) at a significant fraction of steps, especially for low-entropy distributions. However, output evasion (changing y while evading detection) is 0% across all entropy levels, confirming the re-execution guarantee by construction.",
+    "elapsed_s": 3.389
+  },
+  "collision_proximate": {
+    "experiment": "collision_proximate",
+    "config": {
+      "n_trials": 100,
+      "K": 16,
+      "N": 32
+    },
+    "n_substitutions_tested": 512000,
+    "hamming_distance_stats": {
+      "mean": 127.99,
+      "min": 91,
+      "max": 166,
+      "expected_random": 128,
+      "mean_min_per_step": 106.63
+    },
+    "distribution_buckets": {
+      "0-32": 0,
+      "33-64": 0,
+      "65-96": 24,
+      "97-128": 268890,
+      "129-160": 243077,
+      "161-192": 9,
+      "193-224": 0,
+      "225-256": 0
+    },
+    "security_margin": {
+      "hash_bits": 256,
+      "closest_approach_bits": 91,
+      "margin_bits": 91,
+      "note": "Closest approach: 91 differing bits out of 256. A collision requires 0. Mean distance 128.0 matches the expected 128 for a random oracle. The hash provides no exploitable structure for candidate substitution."
+    },
+    "elapsed_s": 8.29
+  }
+}
